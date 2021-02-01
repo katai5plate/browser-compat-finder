@@ -1,4 +1,5 @@
 const bcd = require("@mdn/browser-compat-data");
+const compare = require("semver-compare");
 
 module.exports = () => {
   const { browsers, ...dataList } = bcd;
@@ -27,7 +28,16 @@ module.exports = () => {
             supports: browserList.reduce(
               (p, c) => ({
                 ...p,
-                [c]: Array.isArray(support[c]) ? support[c] : [support[c]],
+                [c]: Array.isArray(support[c])
+                  ? support[
+                      c
+                    ].sort(({ version_added: a }, { version_added: b }) =>
+                      compare(
+                        [true, false, null].includes(a) ? "0.0.0" : b,
+                        [true, false, null].includes(a) ? "0.0.0" : a
+                      )
+                    )
+                  : [support[c]],
               }),
               {}
             ),
