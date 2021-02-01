@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="./getResult.js"></script>
+    <script>
+      (async () => {
+        const supportList = await (await fetch("./supportList.json")).json();
+        const versionList = await (await fetch("./versionList.json")).json();
+        const { searchParams, origin, pathname } = new URL(location.href);
+        const browserName = searchParams.get("browser");
+        const version = searchParams.get("ver");
+        if (!browserName) {
+          document.write(
+            ...Object.keys(versionList).map(
+              (b) =>
+                `<p><a href="${origin + pathname}?browser=${b}&ver=${
+                  version || ""
+                }">${b}</a></p>`
+            )
+          );
+          return;
+        }
+        if (browserName && !version) {
+          document.write(
+            ...versionList[browserName].map(
+              (v) =>
+                `<p><a href="${
+                  origin + pathname
+                }?browser=${browserName}&ver=${v}">${v}</a></p>`
+            )
+          );
+          return;
+        }
+        if (browserName && version) {
+          document.write(
+            `<p><a href="${origin + pathname}">HOME</a></p>`,
+            getResult(
+              { supportList, versionList, browserName, version },
+              "html"
+            )
+          );
+        }
+      })();
+    </script>
+  </body>
+</html>
