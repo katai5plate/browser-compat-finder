@@ -8,7 +8,11 @@ const getResult = (
     .filter(({ supports }) =>
       versions.includes(supports[browserName][0].version_added)
     )
-    .map(({ path, ...v }) => ({ ...v, paths: path.join("/") }));
+    .map(({ path, supports, ...v }) => ({
+      ...v,
+      paths: path.join("/"),
+      supports: supports[browserName],
+    }));
   if (type === "html")
     return result.reduce(
       (p, { paths, mdn }) => `${p}<p><a href="${mdn}">${paths}</a></p>\n`,
