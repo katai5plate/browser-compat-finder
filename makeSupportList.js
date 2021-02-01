@@ -18,10 +18,20 @@ module.exports = () => {
         }
       } else {
         const path = [...breadcrumb, name];
-        console.log(path.join("/"));
+        const support = { ...initSupport, ...data.__compat.support };
+        // console.log(path.join("/"));
         result = [
           ...result,
-          { path, support: { ...initSupport, ...data.__compat.support } },
+          {
+            path,
+            support: browserList.reduce(
+              (p, c) => ({
+                ...p,
+                [c]: Array.isArray(support[c]) ? support[c] : [support[c]],
+              }),
+              {}
+            ),
+          },
         ];
       }
     }
