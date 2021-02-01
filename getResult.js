@@ -3,7 +3,13 @@ const getResult = (
   type
 ) => {
   const list = versionList[browserName];
-  const versions = [true, ...list.slice(list.findIndex((x) => x === version))];
+  const versions = [
+    true,
+    ...list.slice(
+      0,
+      list.findIndex((x) => x === version)
+    ),
+  ];
   const result = supportList
     .filter(({ supports }) =>
       versions.includes(supports[browserName][0].version_added)
