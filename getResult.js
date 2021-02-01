@@ -15,7 +15,16 @@ const getResult = (
     }));
   if (type === "html")
     return result.reduce(
-      (p, { paths, mdn }) => `${p}<p><a href="${mdn}">${paths}</a></p>\n`,
+      (p, { paths, mdn, supports }) =>
+        `${p}<p><p><a href="${mdn}">${paths}</a></p>${supports
+          .map(
+            (support) =>
+              `<p><pre>${JSON.stringify(support, null, 2).replace(
+                /(^\{|\}$)/g,
+                ""
+              )}</pre></p>`
+          )
+          .join("")}</p>\n`,
       ""
     );
   if (type === "json") return JSON.stringify(result, null, 2);
