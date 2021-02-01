@@ -24,7 +24,7 @@ module.exports = () => {
           ...result,
           {
             path,
-            support: browserList.reduce(
+            supports: browserList.reduce(
               (p, c) => ({
                 ...p,
                 [c]: Array.isArray(support[c]) ? support[c] : [support[c]],

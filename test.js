@@ -12,14 +12,14 @@ const testcase = (name, condFn) => {
   console.log("==> SUCCESS!");
 };
 
-testcase("support に全ブラウザ名がある", () =>
+testcase("supports に全ブラウザ名がある", () =>
   list.every(
-    ({ support }) => Object.keys(support).join() === browserList.join()
+    ({ supports }) => Object.keys(supports).join() === browserList.join()
   )
 );
-testcase("全 support に version_added がある", () =>
-  list.every(({ support }) =>
-    Object.values(support).every((s) =>
+testcase("全 supports に version_added がある", () =>
+  list.every(({ supports }) =>
+    Object.values(supports).every((s) =>
       s.filter(
         ({ version_added }) =>
           version_added === null ||
