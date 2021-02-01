@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>browser-compat-finder</title>
   </head>
   <body>
     <script src="./getResult.js"></script>
@@ -14,31 +14,43 @@
         const { searchParams, origin, pathname } = new URL(location.href);
         const browserName = searchParams.get("browser");
         const version = searchParams.get("ver");
+        document.write(
+          `<h1><a href="https://github.com/katai5plate/browser-compat-finder">browser-compat-finder</a></h1>`
+        );
         if (!browserName) {
           document.write(
+            `<p style="font-size:xx-large">browser name:`,
             ...Object.keys(versionList).map(
               (b) =>
-                `<p><a href="${origin + pathname}?browser=${b}&ver=${
+                ` <a href="${origin + pathname}?browser=${b}&ver=${
                   version || ""
-                }">${b}</a></p>`
-            )
+                }">${b}</a>`
+            ),
+            "</p>"
           );
           return;
         }
         if (browserName && !version) {
           document.write(
+            `<p style="font-size:x-large"><a href="${
+              origin + pathname
+            }">BACK</a></p>`,
+            `<p style="font-size:xxx-large">browser version:`,
             ...versionList[browserName].map(
               (v) =>
-                `<p><a href="${
+                ` <a href="${
                   origin + pathname
-                }?browser=${browserName}&ver=${v}">${v}</a></p>`
-            )
+                }?browser=${browserName}&ver=${v}">${v}</a>`
+            ),
+            "</p>"
           );
           return;
         }
         if (browserName && version) {
           document.write(
-            `<p><a href="${origin + pathname}">HOME</a></p>`,
+            `<p style="font-size:x-large"><a href="${
+              origin + pathname
+            }">HOME</a></p>`,
             getResult(
               { supportList, versionList, browserName, version },
               "html"
