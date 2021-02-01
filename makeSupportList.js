@@ -20,11 +20,19 @@ module.exports = () => {
       } else {
         const path = [...breadcrumb, name];
         const support = { ...initSupport, ...data.__compat.support };
+        const mdn = data.__compat.mdn_url;
+        const forCompare = (versionString) => {
+          let verstr = versionString;
+          if (`${versionString}`.match(/^≤\d{1,}/))
+            verstr = `${versionString}`.replace("≤", "");
+          return [true, false, null].includes(verstr) ? "0.0.0" : verstr;
+        };
         // console.log(path.join("/"));
         result = [
           ...result,
           {
             path,
+            mdn,
             supports: browserList.reduce(
               (p, c) => ({
                 ...p,
@@ -32,10 +40,7 @@ module.exports = () => {
                   ? support[
                       c
                     ].sort(({ version_added: a }, { version_added: b }) =>
-                      compare(
-                        [true, false, null].includes(a) ? "0.0.0" : b,
-                        [true, false, null].includes(a) ? "0.0.0" : a
-                      )
+                      compare(forCompare(b), forCompare(a))
                     )
                   : [support[c]],
               }),
@@ -47,6 +52,5 @@ module.exports = () => {
     }
   };
   find(dataList);
-  // console.log(Object.keys(browsers));
   return result;
 };
