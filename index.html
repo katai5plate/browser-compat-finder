@@ -14,6 +14,7 @@
         const { searchParams, origin, pathname } = new URL(location.href);
         const browserName = searchParams.get("browser");
         const version = searchParams.get("ver");
+        const isReverse = searchParams.get("rev") !== null;
         document.write(
           `<h1><a href="https://github.com/katai5plate/browser-compat-finder">browser-compat-finder</a></h1>`
         );
@@ -51,10 +52,19 @@
             `<p style="font-size:x-large"><a href="${
               origin + pathname
             }">HOME</a></p>`,
-            getResult(
-              { supportList, versionList, browserName, version },
-              "html"
-            )
+            !isReverse
+              ? `<p style="font-size:x-large"><a href="${
+                  location.href + "&rev"
+                }">reverse mode</a></p>`
+              : "",
+            getResult({
+              supportList,
+              versionList,
+              browserName,
+              version,
+              isReverse,
+              type: "html",
+            })
           );
         }
       })();

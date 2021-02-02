@@ -1,7 +1,11 @@
-const getResult = (
-  { supportList, versionList, browserName, version },
-  type
-) => {
+const getResult = ({
+  supportList,
+  versionList,
+  browserName,
+  version,
+  isReverse,
+  type,
+}) => {
   const list = versionList[browserName];
   const versions = [
     true,
@@ -11,9 +15,10 @@ const getResult = (
     ),
   ];
   const result = supportList
-    .filter(({ supports }) =>
-      versions.includes(supports[browserName][0].version_added)
-    )
+    .filter(({ supports }) => {
+      const cond = versions.includes(supports[browserName][0].version_added);
+      return isReverse ? !cond : cond;
+    })
     .map(({ path, supports, ...v }) => ({
       ...v,
       paths: path.join("/"),
